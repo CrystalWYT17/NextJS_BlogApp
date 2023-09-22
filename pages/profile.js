@@ -16,7 +16,7 @@ function Profile() {
   }
 
   if (!user) return null;
-  console.log("profile");
+  console.log("profile", user);
   return (
     <div>
       <h1 className="text-3xl font-semibold tracking-wide mt-6">Profile</h1>
