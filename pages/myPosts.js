@@ -1,5 +1,5 @@
 import { postsByUsername } from "../src/graphql/queries";
-import { API, Auth } from "aws-amplify";
+import { API, Auth, Storage } from "aws-amplify";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import Moment from "moment";
@@ -18,7 +18,17 @@ export default function MyPosts() {
       query: postsByUsername,
       variables: { username },
     });
-    setPosts(postData.data.postsByUsername.items);
+    const { items } = postData.data.postsByUsername;
+
+    const postWithImages = await Promise.all(
+      items.map(async (post) => {
+        if (post.coverImage) {
+          post.coverImage = await Storage.get(post.coverImage);
+        }
+        return post;
+      })
+    );
+    setPosts(postWithImages);
   }
 
   async function deletePost(id) {
@@ -33,9 +43,9 @@ export default function MyPosts() {
   console.log("posts: ", posts);
   return (
     <div>
-      {/* <h1 className="text-3xl font-semibold tracking-wide mt-6 mb-2">
+      <h1 className=" text-blue-600 text-3xl font-bold tracking-wide mt-6 mb-2">
         My Posts
-      </h1> */}
+      </h1>
       {/* <Link key={index} href={`/posts/${post.id}`}>
           <div className="cursor-pointer border-b border-gray-300 mt-8 pb-4">
             <h2 className="text-xl font-semibold">{post.title}</h2>
@@ -48,6 +58,13 @@ export default function MyPosts() {
           className="py-8 px-8 max-w-xxl mx-auto bg-white roundeed-sm:items-center sm:space-y-0 sm:space-x-6 mb-2"
           key={index}
         >
+          {post.coverImage && (
+            <img
+              className="w-36 h-36 bg-contain bg-center rounded-sm"
+              alt="image"
+              src={post.coverImage}
+            />
+          )}
           <div className="text-center space-y-2 sm:text-left">
             <div className="space-y-0.5">
               <p className="text-lg text-black font-semibold">{post.title}</p>
