@@ -1,10 +1,8 @@
-"use client";
-import "../configureAmplify";
 import { useState, useEffect } from "react";
 import { API, Logger, Storage, graphqlOperation } from "aws-amplify";
-import { listPosts } from "../src/graphql/queries";
+import { listPosts } from "../graphql/queries";
 import Link from "next/link";
-import { newOnCreatePost } from "../src/graphql/subscriptions";
+import { newOnCreatePost, onCreatePost } from "../graphql/subscriptions";
 
 const Home = () => {
   const [posts, setPosts] = useState([]);
@@ -12,24 +10,28 @@ const Home = () => {
   let subOnCreate;
 
   function setUpSubscription() {
-    subOnCreate = API.graphql(graphqlOperation(newOnCreatePost)).subscribe({
-      next: (postData) => {
-        console.log("postData:", postData.value);
-      },
+    // subOnCreate = API.graphql(graphqlOperation(newOnCreatePost));
+    // console.log(subOnCreate);
+
+    const sub = API.graphql(graphqlOperation(onCreatePost)).subscribe({
+      next: ({ provider, value }) => console.log({ provider, value }),
+      error: (error) => console.warn(error),
     });
     // subOnCreate = API.graphql(graphqlOperation(newOnCreatePost)).subscribe({
     //   next: (posts) => {
     //     console.log("setupsubscribe:", posts);
     //   },
     // });
+    sub.unsubscribe();
   }
 
   useEffect(() => {
     setUpSubscription();
-    return () => {
-      subOnCreate.unsubscribe();
-    };
-  }, []);
+    console.log("i have finished setting up subscription");
+    // return () => {
+    //   subOnCreate.unsubscribe();
+    // };
+  });
 
   useEffect(() => {
     fetchPosts();
@@ -72,7 +74,7 @@ const Home = () => {
                 {post.title}
               </h2>
               <p className="text-gray-500 mt-2">Author: {post.username}</p>
-              {post.comments.items.length > 0 &&
+              {post.comments?.items?.length > 0 &&
                 post.comments.items.map((comment, index) => (
                   <div
                     key={index}

@@ -1,7 +1,10 @@
-import "../styles/globals.css";
-import "../configureAmplify";
+import "../../styles/globals.css";
 import Navbar from "./components/navbar";
-import Home from ".";
+
+import { Amplify } from "aws-amplify";
+import config from "../aws-exports";
+
+Amplify.configure({ ...config });
 
 function MyApp({ Component, pageProps }) {
   return (

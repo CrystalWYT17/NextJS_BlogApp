@@ -1,9 +1,9 @@
-import { postsByUsername } from "../src/graphql/queries";
+import { postsByUsername } from "../graphql/queries";
 import { API, Auth, Storage } from "aws-amplify";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import Moment from "moment";
-import { deletePost as deletePostMutations } from "../src/graphql/mutations";
+import { deletePost as deletePostMutations } from "../graphql/mutations";
 
 export default function MyPosts() {
   const [posts, setPosts] = useState([]);

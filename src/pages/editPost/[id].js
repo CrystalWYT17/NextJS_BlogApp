@@ -7,8 +7,8 @@ const SimpleMDE = dynamic(() => import("react-simplemde-editor"), {
 });
 
 import "easymde/dist/easymde.min.css";
-import { updatePost } from "../../src/graphql/mutations";
-import { getPost } from "../../src/graphql/queries";
+import { updatePost } from "../../graphql/mutations";
+import { getPost } from "../../graphql/queries";
 import { v4 as uuid } from "uuid";
 
 function EditPost() {
@@ -19,6 +19,7 @@ function EditPost() {
   const router = useRouter();
   const { id } = router.query;
   console.log("id:", id);
+
   useEffect(() => {
     fetchPosts();
     async function fetchPosts() {
@@ -86,7 +87,11 @@ function EditPost() {
         Edit Post
       </h1>
       {coverImage && (
-        <img className="mt-4" src={localImage ? localImage : coverImage} />
+        <img
+          className="mt-4"
+          src={localImage ? localImage : coverImage}
+          alt="Image"
+        />
       )}
       <input
         onChange={onChange}

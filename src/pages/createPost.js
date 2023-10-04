@@ -3,7 +3,7 @@ import { withAuthenticator } from "@aws-amplify/ui-react";
 import { API, Auth, Storage } from "aws-amplify";
 import { useRouter } from "next/router";
 import { v4 as uuid } from "uuid";
-import { createPost } from "../src/graphql/mutations";
+import { createPost } from "../graphql/mutations";
 import "easymde/dist/easymde.min.css";
 import dynamic from "next/dynamic";
 const SimpleMDE = dynamic(() => import("react-simplemde-editor"), {

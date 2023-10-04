@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import React from "react";
-import "../../configureAmplify";
+// import "../../configureAmplify";
 import { useEffect, useState } from "react";
 import { Auth, Hub } from "aws-amplify";
 import { useRouter } from "next/router";
@@ -13,6 +13,7 @@ const Navbar = () => {
     ["Home", "/"],
     ["Create Post", "/createPost"],
     ["Profile", "/profile"],
+    ["3D viewer", "/threejs/ifc"],
   ];
 
   useEffect(() => {
@@ -43,21 +44,22 @@ const Navbar = () => {
         };
 
         return (
-          <Link href={url} key={index}>
-            <a
-              onClick={handleLinkClick}
-              className="round-lg px-3 py-2 text-slate-700 font-medium hover:bg-slage-100 hover:text-slate-900"
-            >
-              {title}
-            </a>
+          <Link
+            href={url}
+            key={index}
+            onClick={handleLinkClick}
+            className="round-lg px-3 py-2 text-slate-700 font-medium hover:bg-slage-100 hover:text-slate-900"
+          >
+            {title}
           </Link>
         );
       })}
       {signedUser && (
-        <Link href="/myPosts">
-          <a className="round-lg px-3 py-2 text-slate-700 font-medium hover:bg-slage-100 hover:text-slate-900">
-            My Posts
-          </a>
+        <Link
+          href="/myPosts"
+          className="round-lg px-3 py-2 text-slate-700 font-medium hover:bg-slage-100 hover:text-slate-900"
+        >
+          My Posts
         </Link>
       )}
     </nav>

@@ -1,9 +1,9 @@
 import { API, Auth, Hub, Storage } from "aws-amplify";
 import { useRouter } from "next/router";
-import "../../configureAmplify";
-import { listPosts, getPost } from "../../src/graphql/queries";
+// import "../../configureAmplify";
+import { listPosts, getPost } from "../../graphql/queries";
 import { Children, useEffect, useState } from "react";
-import { createComment } from "../../src/graphql/mutations";
+import { createComment } from "../../graphql/mutations";
 import dynamic from "next/dynamic";
 import { v4 as uuid } from "uuid";
 const SimpleMDE = dynamic(() => import("react-simplemde-editor"), {
@@ -27,7 +27,7 @@ export default function Post({ post }) {
   useEffect(() => {
     authListener();
     updateCoverImage();
-  }, []);
+  });
 
   async function authListener() {
     Hub.listen("auth", (data) => {
@@ -78,7 +78,7 @@ export default function Post({ post }) {
   return (
     <div>
       <h1 className="text-5xl mt-4 font-semibold tracing-wide">{post.title}</h1>
-      {coverImage && <img src={coverImage} className="mt-4" />}
+      {coverImage && <img src={coverImage} className="mt-4" alt="Image" />}
       <p className="text-sm font-light my-4">By {post.username}</p>
       <div className="mt-8">
         <p reactmarkdown="prose">{post.content}</p>
